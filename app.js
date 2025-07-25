@@ -462,7 +462,7 @@ app.get('/u/:username', (req, res) => {
 
     <div class="info-box">
       <p><strong>INSTRUCTIONS:</strong> Enter your <span style="color: #ffd6f0;">Instagram handle</span>, starting with <code>@</code>.</p>
-      <p><strong> If there’s <span style="color: #ffd6f0;">no match</span>, they won’t know. If there’s a match, you’ll both find out!</strong></p>
+      <p> ${req.params.username} gave us a list of one or more crush(es), stored as IG handles. If there’s <span style="color: #ffd6f0;">no match</span>, they won’t know. If your handle's in the list and it is a MATCH, you’ll both find out!</p>
     </div>
 
     <form method="POST" action="/submit/${req.params.username}">
