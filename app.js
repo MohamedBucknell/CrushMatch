@@ -2,13 +2,27 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const app = express();
-const PORT = 3000;
+
 
  
 
 const users = {};
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
+
+
+const PORT = process.env.PORT || 3000;
+
+app.get('/logout', (req, res) => res.redirect('/'));
+
+app.listen(PORT, () => console.log(`🔥 Server running: http://localhost:${PORT}`));
+
+
+
+
 
 // Updated color scheme & centered style inspired by ngl.link
 const style = `
