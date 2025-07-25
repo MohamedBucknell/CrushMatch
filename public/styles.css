@@ -1,0 +1,122 @@
+/* Google Fonts import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+.container {
+  background: rgba(255 255 255 / 0.1);
+  border-radius: 15px;
+  padding: 2.5rem 3rem;
+  width: 380px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+h1, h2, h3 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+p {
+  margin-bottom: 1.2rem;
+  font-weight: 300;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0 1.5rem 0;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+  color: #333;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  box-shadow: 0 0 8px 3px #9c27b0;
+}
+
+button {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(255,75,43,0.6);
+  transition: background 0.4s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  transform: translateY(-3px);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(255,75,43,0.5);
+}
+
+a {
+  color: #f0c;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 2rem;
+}
+
+ul li {
+  background: rgba(255 255 255 / 0.2);
+  margin: 0.3rem 0;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+input[readonly] {
+  background: rgba(255 255 255 / 0.4);
+  cursor: pointer;
+  font-weight: 600;
+  user-select: all;
+}
+
+input[readonly]:hover {
+  box-shadow: 0 0 8px 3px #9c27b0;
+}
+
+footer {
+  font-size: 0.8rem;
+  margin-top: 3rem;
+  color: #ddd;
+}

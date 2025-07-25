@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Crush to <%= username %></title>
+</head>
+<link rel="stylesheet" href="/styles.css" />
+
+<body>
+    <h1>Send a Crush to <%= username %></h1>
+    <form method="POST" action="/submit/<%= username %>">
+        <input name="yourName" placeholder="Your Name" required>
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

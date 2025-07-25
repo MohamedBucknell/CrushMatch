@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard for <%= username %></title>
+</head>
+<link rel="stylesheet" href="/styles.css" />
+
+<body>
+
+  <h1>Welcome, <%= username %>!</h1>
+
+  <h3>Share this link with your crushes:</h3>
+  <input type="text" value="<%= crushLink %>" readonly style="width: 350px;" onclick="this.select()" />
+
+  <h2>Your Crushes:</h2>
+  <ul>
+    <% crushes.forEach(function(crush) { %>
+      <li><%= crush %></li>
+    <% }) %>
+  </ul>
+
+  <form method="POST" action="/add-crush/<%= username %>">
+    <input name="crushName" placeholder="Add a new crush" required />
+    <button type="submit">Add Crush</button>
+  </form>
+
+  <h2>Matches:</h2>
+  <ul>
+    <% matches.forEach(function(match) { %>
+      <li><%= match %></li>
+    <% }) %>
+  </ul>
+
+  <p><a href="/logout">Logout</a></p>
+</body>
+</html>
