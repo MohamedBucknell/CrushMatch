@@ -11,6 +11,7 @@ const users = {};
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+const uniqueIPs = new Set();
 
 
 
@@ -236,6 +237,16 @@ function generateToken(username, password) {
 
 
 
+//middleware
+
+app.use((req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  if (!uniqueIPs.has(ip)) {
+    uniqueIPs.add(ip);
+    console.log(`Unique visitor count: ${uniqueIPs.size}`);
+  }
+  next();
+});
 
 
 
@@ -448,11 +459,18 @@ app.post('/add-crush/:username', (req, res) => {
   }
   const crushName = req.body.crushName.trim().toLowerCase();
   if (!user.crushes.includes(crushName)) user.crushes.push(crushName);
-console.log('Users list:', users);
+
+  // Check if crush has previously submitted this user as their crush — if so, it's a match
+  if (users[crushName] && users[crushName].submissions.includes(req.params.username)) {
+    if (!user.matches.includes(crushName)) user.matches.push(crushName);
+    if (!users[crushName].matches.includes(req.params.username)) users[crushName].matches.push(req.params.username);
+  }
+
+  console.log('Users list:', users);
 
   res.redirect(`/dashboard/${req.params.username}?token=${token}`);
 });
-
+//A7SystemA
 app.get('/u/:username', (req, res) => {
   const user = users[req.params.username];
   if (!user) return res.status(404).send(renderPage(`<h1>User not found.</h1>`));
@@ -474,26 +492,48 @@ app.get('/u/:username', (req, res) => {
 });
 
 app.post('/submit/:username', (req, res) => {
-  const user = users[req.params.username];
-  if (!user) return res.status(404).send(renderPage(`<h1>User not found.</h1>`));
+  const mainUser = users[req.params.username];
+  if (!mainUser) return res.status(404).send(renderPage(`<h1>User not found.</h1>`));
+
   const submitterName = req.body.yourName.trim().toLowerCase();
-  if (!user.submissions.includes(submitterName)) user.submissions.push(submitterName);
-  if (user.crushes.includes(submitterName)) {
-    if (!user.matches.includes(submitterName)) user.matches.push(submitterName);
+
+  // Add submitterName to mainUser.submissions (if not already)
+  if (!mainUser.submissions.includes(submitterName)) mainUser.submissions.push(submitterName);
+
+  // If submitter user exists, add mainUser to their submissions
+  if (users[submitterName]) {
+    if (!users[submitterName].submissions.includes(req.params.username)) {
+      users[submitterName].submissions.push(req.params.username);
+    }
+  } else {
+    // If submitter user doesn't exist, create a blank profile to track submissions
+    users[submitterName] = {
+      password: '',
+      email: '',
+      crushes: [],
+      matches: [],
+      submissions: [req.params.username]
+    };
+  }
+
+  // Check if mutual crush exists
+  const isMatch =
+    mainUser.crushes.includes(submitterName) ||
+    (users[submitterName] && users[submitterName].crushes.includes(req.params.username));
+
+  if (isMatch) {
+    // Add to matches if not already matched
+    if (!mainUser.matches.includes(submitterName)) mainUser.matches.push(submitterName);
+    if (!users[submitterName].matches.includes(req.params.username)) users[submitterName].matches.push(req.params.username);
+
+    console.log('Users list:', users);
+    return res.send(renderPage(`<h1>It's a MATCH! ${submitterName} and ${req.params.username} like each other! Please reach out first to ${req.params.username}</h1>`));
+  }
 console.log('Users list:', users);
 
-    return res.send(renderPage(`<h1>It's a MATCH! ${submitterName} and ${req.params.username} like each other!</h1>`));
-  }
-  res.send(renderPage(`<h1>Thanks for submitting your crush!</h1>`));
+  res.send(renderPage(`<h1>Thanks for submitting your crush! There is no match now, but if they write your name in the future we'll let you know!</h1>`));
 });
-
-app.get('/about', (req, res) => {
-  res.send(renderPage(`
-    <h1>About CrushMatch</h1>
-    <p>CrushMatch is a safe and anonymous way to find out who likes you back.</p>
-    <p>Simply create a profile, share your unique link, and let the magic happen!</p>
-  `));
-});
+//A7System1
 
 app.get('/contact', (req, res) => {
   res.send(renderPage(`
